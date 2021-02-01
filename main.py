@@ -4,6 +4,7 @@ import json
 import os
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+os.mkdir('data')
 
 ## Functions:
 
@@ -18,7 +19,7 @@ def datespan(startDate, endDate, delta=timedelta(days=1)):
 def weeklycovid(startweek, finalweek, filename):
     r = requests.get('https://api.covid19tracking.narrativa.com/api/country/spain?date_from={}&date_to={}'.format(startweek, finalweek))
     coviddata = r.json()
-    with open(THIS_FOLDER + "/" + filename, 'w') as outfile:
+    with open(THIS_FOLDER + "/data/" + filename, 'w') as outfile:
         json.dump(coviddata,  outfile)
 
 ## Initialization variables
@@ -38,4 +39,5 @@ for i in weeks:
     t = (i+timedelta(days=7)).strftime("%Y-%m-%d")
     f = s + '.json'
     weeklycovid(s, t, f) 
-#replace("/","_")
+
+    
