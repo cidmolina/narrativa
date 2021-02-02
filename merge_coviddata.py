@@ -3,13 +3,6 @@ import json
 import pandas as pd
 import os 
 
-## Time functions
-def datespan(startDate, endDate, delta=timedelta(days=1)):
-    currentDate = startDate
-    while currentDate < endDate:
-        yield currentDate
-        currentDate += delta
-
 ## Initialization:
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 header_added = False
@@ -33,13 +26,16 @@ for i in os.listdir('data'): # Loop every file (1 file per week)
         df = pd.DataFrame(d["dates"][day]["countries"]["Spain"]["regions"]) # Select relevant key
         #print(df)
 
-        df.drop(['links','sub_regions'], axis=1, inplace=True) # Remove nested fields corresponding to subregions
+        df.drop(['links','sub_regions', 'name_es', 'name_it'], axis=1, inplace=True) # Remove nested fields corresponding to subregions
 
         # Final output file should have 15 (weeks) * 7 (days) * 17 (regions) + header = 1996 lines
 
         if not header_added: # Add column names in the first iteration of the loop
-            df.to_csv('output.csv', mode='a', header=True, index=False)
+            df.to_csv('covid_data.csv', mode='w', header=True, index=False)
             header_added = True
         else:
-            df.to_csv('output.csv', mode='a', header=False, index=False) 
+            df.to_csv('covid_data.csv', mode='a', header=False, index=False) 
+
+
+
 
